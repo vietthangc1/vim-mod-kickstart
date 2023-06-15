@@ -219,6 +219,10 @@ require('lazy').setup({
     build = ':TSUpdate',
   },
 
+  {
+    "ray-x/lsp_signature.nvim",
+  },
+
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -246,6 +250,10 @@ vim.wo.number = true
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
+
+-- Shift tab
+vim.cmd([[nnoremap <S-Tab> <<]])
+vim.cmd([[inoremap <S-Tab> <C-d>]])
 
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -309,6 +317,13 @@ require('telescope').setup {
     },
   },
 }
+
+require "lsp_signature".setup({
+  bind = true,   -- This is mandatory, otherwise border config won't get registered.
+  handler_opts = {
+    border = "rounded"
+  }
+})
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
@@ -404,7 +419,7 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnos
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
-vim.cmd([[nnoremap <silent><Leader><C-]> <C-w><C-]><C-w>T]])
+vim.cmd([[nnoremap <silent><C-]> <C-w><C-]><C-w>T]])
 
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
@@ -428,7 +443,7 @@ local on_attach = function(_, bufnr)
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-  nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+  nmap('gi', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
   nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
   nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
   nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
@@ -448,6 +463,7 @@ local on_attach = function(_, bufnr)
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
     vim.lsp.buf.format()
+    vim.lsp.buf.code_action({ context = { only = { 'source.organizeImports' } }, apply = true })
   end, { desc = 'Format current buffer with LSP' })
 end
 

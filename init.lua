@@ -41,6 +41,7 @@ P.S. You can delete this when you're done too. It's your config now :)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format(async=false)]]
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
@@ -254,6 +255,8 @@ vim.o.mouse = 'a'
 -- Shift tab
 vim.cmd([[nnoremap <S-Tab> <<]])
 vim.cmd([[inoremap <S-Tab> <C-d>]])
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
 
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -319,7 +322,7 @@ require('telescope').setup {
 }
 
 require "lsp_signature".setup({
-  bind = true,   -- This is mandatory, otherwise border config won't get registered.
+  bind = true, -- This is mandatory, otherwise border config won't get registered.
   handler_opts = {
     border = "rounded"
   }

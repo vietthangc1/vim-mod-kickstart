@@ -26,7 +26,7 @@ return {
 
       },
       winbar = {
-        enabled = false,
+        enabled = true,
         name_formatter = function(term) --  term: Terminal
           return term.number + term.name
         end

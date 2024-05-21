@@ -2,6 +2,12 @@ return {
   'akinsho/toggleterm.nvim',
   -- Optional dependency
   config = function()
+    -- vim.cmd([[let &shell = has('win32') ? 'powershell' : 'pwsh'
+    -- let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
+    -- let &shellredir = '-RedirectStandardOutput %s -NoNewWindow -Wait'
+    -- let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+    -- set shellquote= shellxquote=
+    -- ]])
     require("toggleterm").setup {
       open_mapping = [[<c-\>]],
       hide_numbers = true, -- hide the number column in toggleterm buffers
@@ -20,7 +26,7 @@ return {
       direction = 'float',
       close_on_exit = true,     -- close the terminal window when the process exits
       -- Change the default shell. Can be a string or a function returning a string
-      shell = vim.o.shell,
+      shell = "pwsh.exe",
       auto_scroll = true, -- automatically scroll to the bottom on terminal output
       float_opts = {
 
